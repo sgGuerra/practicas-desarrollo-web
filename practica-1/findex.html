@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Finanzas Personales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-color);
+            max-width: 600px;
+            margin: 0 auto 25px;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        .btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 35px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--light-color);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .result-item:hover {
+            transform: scale(1.03);
+            background: #f0f4ff;
+        }
+
+        .result-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .result-label {
+            font-size: 1.1rem;
+            color: var(--gray-color);
+            font-weight: 500;
+        }
+
+        .goal-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .goal-btn {
+            background: var(--light-gray);
+            border: 1px solid var(--light-gray);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .goal-btn:hover, .goal-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .savings-breakdown {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .breakdown-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary-color) 0%,
+                var(--primary-color) var(--expenses-percent, 0%),
+                var(--success-color) var(--expenses-percent, 0%),
+                var(--success-color) calc(var(--expenses-percent, 0%) + var(--savings-percent, 0%)),
+                var(--warning-color) calc(var(--expenses-percent, 0%) + var(--savings-percent, 0%))
+            );
+            position: relative;
+            box-shadow: 0 0 0 8px white,
+                        0 0 0 9px var(--light-gray);
+        }
+
+        .chart-center {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--light-gray);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .expenses-color {
+            background: var(--primary-color);
+        }
+
+        .savings-color {
+            background: var(--success-color);
+        }
+
+        .remaining-color {
+            background: var(--warning-color);
+        }
+
+        .timeline-container {
+            margin-top: 40px;
+        }
+
+        .timeline-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--secondary-color);
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--light-gray);
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+
+        .timeline-point {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100px;
+        }
+
+        .point-dot {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .point-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .point-date {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            margin-top: 5px;
+        }
+
+        .recommendations {
+            background: linear-gradient(135deg, #eef2ff 0%, #e6eeff 100%);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .recommendations h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .recommendations ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .recommendations li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.3rem;
+            }
+            
+            .card, .result-container {
+                padding: 25px;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .timeline::before {
+                width: 4px;
+                height: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .timeline-point {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Control de Finanzas Personales</h1>
+            <p class="subtitle">Administra tu dinero de manera inteligente, calcula tus ahorros y planifica el tiempo necesario para alcanzar tus metas financieras</p>
+        </header>
+
+        <div class="card-container">
+            <div class="card">
+                <h2 class="card-title">Tus Finanzas</h2>
+                <div class="input-group">
+                    <label for="salary">Salario Mensual ($)</label>
+                    <input type="number" id="salary" placeholder="Ingresa tu salario mensual" value="2500000">
+                </div>
+                <div class="input-group">
+                    <label for="expenses">Gastos Mensuales ($)</label>
+                    <input type="number" id="expenses" placeholder="Ingresa tus gastos mensuales" value="1800000">
+                </div>
+                <div class="input-group">
+                    <label for="goal">Meta de Ahorro ($)</label>
+                    <input type="number" id="goal" placeholder="Ej: Precio de un carro o moto" value="25000000">
+                </div>
+                <div class="input-group">
+                    <label>Selecciona tu meta</label>
+                    <div class="goal-options">
+                        <div class="goal-btn active" data-goal="25000000">Carro</div>
+                        <div class="goal-btn" data-goal="12000000">Moto</div>
+                        <div class="goal-btn" data-goal="5000000">Viaje</div>
+                        <div class="goal-btn" data-goal="15000000">Casa</div>
+                    </div>
+                </div>
+                <button class="btn" id="calculate">Calcular Ahorros</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Recomendaciones</h2>
+                <div class="recommendations">
+                    <h3>Consejos para mejorar tus finanzas</h3>
+                    <ul>
+                        <li>Establece un presupuesto mensual y síguelo estrictamente</li>
+                        <li>Intenta ahorrar al menos el 20% de tu salario mensual</li>
+                        <li>Reduce gastos innecesarios como suscripciones no utilizadas</li>
+                        <li>Considera generar ingresos adicionales con un trabajo parcial</li>
+                        <li>Establece metas de ahorro a corto, mediano y largo plazo</li>
+                        <li>Evita endeudarte con tarjetas de crédito de alto interés</li>
+                        <li>Invierte tus ahorros en opciones de bajo riesgo para generar rendimientos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-container" id="resultContainer">
+            <h2 class="result-title">Resultados de tu Plan Financiero</h2>
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-value" id="monthlySavings">$0</div>
+                    <div class="result-label">Ahorro Mensual</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="monthsNeeded">0</div>
+                    <div class="result-label">Meses Necesarios</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="yearsNeeded">0</div>
+                    <div class="result-label">Años Necesarios</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="totalSaved">$0</div>
+                    <div class="result-label">Meta de Ahorro</div>
+                </div>
+            </div>
+
+            <div class="savings-breakdown">
+                <h3 class="breakdown-title">Distribución de tus Ingresos</h3>
+                <div class="chart-container">
+                    <div class="pie-chart" id="pieChart">
+                        <div class="chart-center">Gastos</div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color expenses-color"></div>
+                        <span>Gastos Mensuales</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color savings-color"></div>
+                        <span>Ahorro Mensual</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color remaining-color"></div>
+                        <span>Restante</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-container">
+                <h3 class="timeline-title">Línea de Tiempo para tu Meta</h3>
+                <div class="timeline" id="timeline">
+                    <!-- Timeline points will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 Control de Finanzas Personales - Una herramienta para ayudarte a alcanzar tus metas financieras</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Goal buttons functionality
+            const goalButtons = document.querySelectorAll('.goal-btn');
+            const goalInput = document.getElementById('goal');
+            
+            goalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    goalButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Set the goal value
+                    const goalValue = this.getAttribute('data-goal');
+                    goalInput.value = goalValue;
+                });
+            });
+            
+            // Calculate button functionality
+            const calculateBtn = document.getElementById('calculate');
+            const resultContainer = document.getElementById('resultContainer');
+            
+            calculateBtn.addEventListener('click', function() {
+                const salary = parseFloat(document.getElementById('salary').value) || 0;
+                const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+                const goal = parseFloat(document.getElementById('goal').value) || 0;
+                
+                if (salary <= 0 || expenses < 0 || goal <= 0) {
+                    alert('Por favor ingresa valores válidos para el salario, gastos y meta de ahorro.');
+                    return;
+                }
+                
+                if (expenses >= salary) {
+                    alert('Tus gastos no pueden ser mayores o iguales a tu salario. Revisa tus números.');
+                    return;
+                }
+                
+                // Calculate monthly savings
+                const monthlySavings = salary - expenses;
+                
+                // Calculate time needed to reach goal
+                const monthsNeeded = Math.ceil(goal / monthlySavings);
+                const yearsNeeded = Math.floor(monthsNeeded / 12);
+                const remainingMonths = monthsNeeded % 12;
+                
+                // Display results
+                document.getElementById('monthlySavings').textContent = formatCurrency(monthlySavings);
+                document.getElementById('monthsNeeded').textContent = monthsNeeded;
+                document.getElementById('yearsNeeded').textContent = yearsNeeded + (remainingMonths > 0 ? ` años y ${remainingMonths} meses` : ' años');
+                document.getElementById('totalSaved').textContent = formatCurrency(goal);
+                
+                // Update pie chart
+                const expensesPercent = (expenses / salary) * 100;
+                const savingsPercent = (monthlySavings / salary) * 100;
+                const remainingPercent = 100 - expensesPercent - savingsPercent;
+                
+                const pieChart = document.getElementById('pieChart');
+                pieChart.style.setProperty('--expenses-percent', `${expensesPercent}%`);
+                pieChart.style.setProperty('--savings-percent', `${savingsPercent}%`);
+                pieChart.querySelector('.chart-center').textContent = `${Math.round(expensesPercent)}%`;
+                
+                // Generate timeline
+                generateTimeline(monthsNeeded, salary, expenses, goal);
+                
+                // Show results container
+                resultContainer.style.display = 'block';
+                
+                // Scroll to results
+                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            
+            // Initialize with calculation
+            calculateBtn.click();
+        });
+        
+        function formatCurrency(amount) {
+            return '$' + amount.toLocaleString('es-ES');
+        }
+        
+        function generateTimeline(monthsNeeded, salary, expenses, goal) {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+            
+            // Determine number of points to show (max 5)
+            const maxPoints = 5;
+            const interval = Math.ceil(monthsNeeded / (maxPoints - 1));
+            
+            // Create timeline points
+            for (let i = 0; i < maxPoints; i++) {
+                const month = i * interval;
+                if (month > monthsNeeded) break;
+                
+                const point = document.createElement('div');
+                point.className = 'timeline-point';
+                
+                const dot = document.createElement('div');
+                dot.className = 'point-dot';
+                if (i === 0) dot.style.background = '#4361ee';
+                if (i === maxPoints - 1) dot.style.background = '#4cc9f0';
+                
+                const label = document.createElement('div');
+                label.className = 'point-label';
+                label.textContent = month === 0 ? 'Inicio' : (month >= monthsNeeded ? 'Meta' : `Mes ${month}`);
+                
+                const date = document.createElement('div');
+                date.className = 'point-date';
+                
+                // Calculate accumulated savings
+                const accumulatedSavings = month * (salary - expenses);
+                const percentComplete = Math.min(100, Math.round((accumulatedSavings / goal) * 100));
+                
+                const savingsLabel = document.createElement('div');
+                savingsLabel.className = 'point-date';
+                savingsLabel.textContent = formatCurrency(accumulatedSavings);
+                
+                point.appendChild(dot);
+                point.appendChild(label);
+                point.appendChild(savingsLabel);
+                timeline.appendChild(point);
+            }
+        }
+    </script>
+</body>
+</html>
+
